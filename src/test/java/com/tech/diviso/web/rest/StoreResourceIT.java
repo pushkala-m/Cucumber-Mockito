@@ -96,6 +96,7 @@ public class StoreResourceIT {
     public void createStore() throws Exception {
         int databaseSizeBeforeCreate = storeRepository.findAll().size();
 
+
         // Create the Store
         StoreDTO storeDTO = storeMapper.toDto(store);
         restStoreMockMvc.perform(post("/api/stores")
@@ -148,7 +149,7 @@ public class StoreResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER)));
     }
-    
+
     @Test
     @Transactional
     public void getStore() throws Exception {

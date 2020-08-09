@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,8 @@ public class AddressStepDefs {
 
     @Inject
     private AddressService addressService;
+
+    List<AddressDTO>addresslist=new ArrayList<AddressDTO>();
 
 //    AddressService addressService1= mock( AddressService.class);
 
@@ -60,16 +63,19 @@ public class AddressStepDefs {
         address_dto.setState(coloums.get(0).get("state"));
         address_dto.setCity(coloums.get(0).get("city"));
         System.out.println(coloums.get(0).get("city"));
-
-      addressService.save(address_dto);
+        addresslist.add(address_dto);
+        addressService.save(address_dto);
 
     }
 
 
     @When("if the selected addressType is {string}")
     public void if_the_selected_addressType_is(String address) {
-        default_address=new AddressDTO();
-        default_address.setAddressType(address);
+//        default_address=new AddressDTO();
+//        default_address.setAddressType(address);
+        addresslist.forEach( x-> {
+            if(address.equals(x.getAddressType())) {
+                default_address=x; } });
         Assert.assertTrue(address.equals(default_address.getAddressType()));
         System.out.println(" selected adress: " +default_address.getAddressType());
 
@@ -79,5 +85,6 @@ public class AddressStepDefs {
     public void the_default_addressType_should(String address) {
         System.out.println("default adress: " + address);
         Assert.assertTrue(default_address.getAddressType().equals(address));
+
     }
 }
